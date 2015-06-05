@@ -16,7 +16,7 @@
 - (NSString *)firstWa:(NSArray *)elements;
 - (NSArray *)removeNonStrings:(NSArray *)elements;
 - (NSArray *)countElements:(NSArray *)elements;
-- (NSArray *)mergeDataWithKeys:(NSArray *)keys AndData:(NSArray *)data;
+- (NSArray *)mergeDataWithKeys:(NSArray *)keys AndData:(NSArray *)datas;
 - (NSArray *)findCool:(NSArray *)dictionaries;
 - (NSDictionary *)organizeSchools:(NSDictionary *)schools;
 

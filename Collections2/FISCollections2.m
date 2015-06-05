@@ -85,7 +85,7 @@
     return arrayOfElementWithCount;
 }
 
-- (NSArray *)mergeDataWithKeys:(NSArray *)keys AndData:(NSArray *)data
+- (NSArray *)mergeDataWithKeys:(NSArray *)keys AndData:(NSArray *)datas
 {
 //    keys = @[
 //             @{@"first_name":  @"blake"},
@@ -99,17 +99,35 @@
 //                            @"height": @60,
 //                            @"last_name": @"dubs"}}
 //             ];
+//    mergedData = @[
+//                   @{@"first_name": @"blake",
+//                     @"awesomeness": @10,
+//                     @"height": @74,
+//                     @"last_name": @"johnson"},
+//                   @{@"first_name": @"ashley",
+//                     @"awesomeness": @9,
+//                     @"height": @60,
+//                     @"last_name": @"dubs"}
+//                   ];
     
+    NSMutableArray *mergedData = [@[] mutableCopy];
+    NSMutableArray *keysOfFirstNames = [@[] mutableCopy];
     
     for (NSDictionary *dictionaryOfKeys in keys) {
         NSString *key = dictionaryOfKeys[@"first_name"];
-        for (NSDictionary *dictionaryOfDatas in data) {
-            if (dictionaryOfDatas[key]) {
-                dictionaryOfDatas[key][
-            }
+        [keysOfFirstNames addObject:key];
+    }
+    
+    for (NSInteger i=0; i<keysOfFirstNames.count; i++) {
+        for (NSDictionary *data in datas) {
+            NSString *firstName = keysOfFirstNames[i];
+            NSMutableDictionary *mergedDictionary = [data[firstName] mutableCopy];   // convert to mutable dictionary
+            mergedDictionary[@"first_name"] = firstName;
+            [mergedData addObject:[mergedDictionary copy]];   // convert back to immutable dictionary
         }
     }
-    return nil;
+
+    return mergedData;
 }
 
 - (NSArray *)findCool:(NSArray *)dictionaries
@@ -127,7 +145,41 @@
 
 - (NSDictionary *)organizeSchools:(NSDictionary *)schools
 {
-    return nil;
+//    schools = @{
+//                @"flatiron school bk": @{@"location": @"NYC"},
+//                @"flatiron school": @{@"location": @"NYC"},
+//                @"dev boot camp": @{@"location": @"SF"},
+//                @"dev boot camp chicago": @{@"location": @"Chicago"},
+//                @"general assembly": @{@"location": @"NYC"},
+//                @"Hack Reactor": @{@"location": @"SF"}
+//                };
+//    
+//    organizedSchools = @{@"NYC":@[@"flatiron school bk",@"flatiron school",@"general assembly"],
+//                         @"SF":@[@"dev boot camp",@"Hack Reactor"],
+//                         @"Chicago":@[@"dev boot camp chicago"]};
+    
+    NSMutableDictionary *organizedSchools = [@{} mutableCopy];
+    NSMutableArray *cities = [@[] mutableCopy];
+    
+    for (NSDictionary *location in [schools allValues]) {
+        NSString *city = location[@"location"];
+        if (![cities containsObject:city]) {
+            [cities addObject:city];
+        }
+    }
+    
+    for (NSString *city in cities) {
+        
+        NSMutableArray *schoolsInSameCity = [@[] mutableCopy];
+        for (NSString *school in schools) {
+            if ([schools[school][@"location"] isEqualToString:city]) {
+                [schoolsInSameCity addObject:school];
+            }
+        }
+        organizedSchools[city] = schoolsInSameCity;
+    }
+    
+    return organizedSchools;
 }
 
 @end
